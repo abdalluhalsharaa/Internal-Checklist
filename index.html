@@ -1,405 +1,772 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Internal Checklist</title>
-  <style>
-    :root{
-      --bg:#0b1220;
-      --card:#121a2b;
-      --text:#e9eefc;
-      --muted:#a8b3d6;
-      --accent:#4cc9f0;
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Internal Checklist</title>
+    <style>
+        /* ========== متغيرات الوضع الداكن (الافتراضي) ========== */
+        :root,
+        [data-theme="dark"] {
+            --bg: #0b1220;
+            --card: #121a2b;
+            --text: #e9eefc;
+            --muted: #a8b3d6;
+            --accent: #4cc9f0;
+            --success: #22c55e;
+            --bar: #1e2a45;
+            --barFill: #38bdf8;
+            --shadow: 0 10px 30px rgba(0, 0, 0, .35);
+            --radius: 16px;
+            --bgGradient: radial-gradient(1000px 600px at 20% 10%, #14213d 0%, var(--bg) 55%) fixed;
+            --headerBorder: rgba(255, 255, 255, .08);
+            --headerBg: linear-gradient(180deg, rgba(76, 201, 240, .18), rgba(18, 26, 43, .0));
+            --mainBg: rgba(18, 26, 43, .70);
+            --mainBorder: rgba(255, 255, 255, .08);
+            --itemBg: rgba(255, 255, 255, .03);
+            --itemBorder: rgba(255, 255, 255, .08);
+            --itemHoverBg: rgba(255, 255, 255, .06);
+            --itemHoverBorder: rgba(255, 255, 255, .12);
+            --btnBg: rgba(255, 255, 255, .06);
+            --btnBorder: rgba(255, 255, 255, .12);
+            --btnHoverBg: rgba(255, 255, 255, .10);
+            --btnHoverBorder: rgba(255, 255, 255, .18);
+            --linkBtnBg: rgba(255, 255, 255, .05);
+            --linkBtnBorder: rgba(255, 255, 255, .16);
+            --linkBtnColor: #d0d8f0;
+            --linkBtnHoverBg: rgba(76, 201, 240, .18);
+            --linkBtnHoverBorder: rgba(76, 201, 240, .45);
+            --checkBorder: rgba(255, 255, 255, .35);
+            --checkedItemBg: rgba(34, 197, 94, .10);
+            --checkedItemBorder: rgba(34, 197, 94, .40);
+            --checkedCheckBg: rgba(34, 197, 94, .18);
+            --checkedCheckBorder: rgba(34, 197, 94, .65);
+            --toggleBg: rgba(255, 255, 255, .06);
+            --toggleBorder: rgba(255, 255, 255, .12);
 
-      /* ✅ New “checked” color = green */
-      --success:#22c55e;
+            /* 🆕 ألوان البسملة والتذييل للوضع الليلي */
+            --basmala-color: #ffffff;
+            --footer-color: #ffffff;
+        }
 
-      --bar:#1e2a45;
-      --barFill:#38bdf8;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --radius:16px;
-    }
+        /* ========== متغيرات الوضع النهاري ========== */
+        [data-theme="light"] {
+            --bg: #f1f5f9;
+            --card: #ffffff;
+            --text: #1e293b;
+            --muted: #475569;
+            --accent: #2563eb;
+            --success: #16a34a;
+            --bar: #e2e8f0;
+            --barFill: #3b82f6;
+            --shadow: 0 10px 30px rgba(0, 0, 0, .08);
+            --bgGradient: radial-gradient(1000px 600px at 20% 10%, #e0e7ff 0%, var(--bg) 55%) fixed;
+            --headerBorder: rgba(0, 0, 0, .06);
+            --headerBg: linear-gradient(180deg, rgba(37, 99, 235, .08), rgba(255, 255, 255, .0));
+            --mainBg: rgba(255, 255, 255, .75);
+            --mainBorder: rgba(0, 0, 0, .06);
+            --itemBg: rgba(0, 0, 0, .02);
+            --itemBorder: rgba(0, 0, 0, .06);
+            --itemHoverBg: rgba(0, 0, 0, .04);
+            --itemHoverBorder: rgba(0, 0, 0, .10);
+            --btnBg: rgba(0, 0, 0, .04);
+            --btnBorder: rgba(0, 0, 0, .10);
+            --btnHoverBg: rgba(0, 0, 0, .08);
+            --btnHoverBorder: rgba(0, 0, 0, .16);
+            --linkBtnBg: rgba(0, 0, 0, .04);
+            --linkBtnBorder: rgba(0, 0, 0, .12);
+            --linkBtnColor: #334155;
+            --linkBtnHoverBg: rgba(37, 99, 235, .10);
+            --linkBtnHoverBorder: rgba(37, 99, 235, .35);
+            --checkBorder: rgba(0, 0, 0, .25);
+            --checkedItemBg: rgba(22, 163, 74, .08);
+            --checkedItemBorder: rgba(22, 163, 74, .30);
+            --checkedCheckBg: rgba(22, 163, 74, .12);
+            --checkedCheckBorder: rgba(22, 163, 74, .50);
+            --toggleBg: rgba(0, 0, 0, .05);
+            --toggleBorder: rgba(0, 0, 0, .10);
 
-    *{ box-sizing:border-box; }
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(1000px 600px at 20% 10%, #14213d 0%, var(--bg) 55%) fixed;
-      color:var(--text);
-    }
+            /* ألوان البسملة والتذييل للوضع النهاري */
+            --basmala-color: #166534; /* أخضر غامق */
+            --footer-color: #000000;
+        }
 
-    .wrap{
-      max-width: 860px;
-      margin: 32px auto;
-      padding: 0 16px 40px;
-    }
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+            background: var(--bgGradient);
+            color: var(--text);
+        }
 
-    header{
-      background: linear-gradient(180deg, rgba(76,201,240,.18), rgba(18,26,43,.0));
-      border: 1px solid rgba(255,255,255,.08);
-      box-shadow: var(--shadow);
-      border-radius: var(--radius);
-      padding: 18px 18px 16px;
-      position: sticky;
-      top: 12px;
-      backdrop-filter: blur(10px);
-      z-index: 10;
-    }
+        /* ========== 🆕 البسملة ========== */
+        .basmala {
+            text-align: center;
+            font-size: 2.4rem;
+            font-weight: 700;
+            font-family: 'Traditional Arabic', 'Scheherazade New', 'Amiri', serif;
+            color: var(--basmala-color);
+            padding: 24px 16px 8px;
+            margin: 0;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            background: transparent;
+            transition: color 0.3s ease;
+        }
 
-    h1{
-      margin: 0 0 8px;
-      font-size: 26px;
-      letter-spacing: .2px;
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
+        /* ========== 🆕 التذييل ========== */
+        .footer {
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--footer-color);
+            padding: 24px 16px 40px;
+            margin-top: 12px;
+            background: transparent;
+            transition: color 0.3s ease;
+        }
 
-    .sub{
-      margin:0 0 14px;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.5;
-    }
+        .wrap {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 0 16px 10px;
+        }
 
-    .progressRow{
-      display:flex;
-      align-items:center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
+        header {
+            background: var(--headerBg);
+            border: 1px solid var(--headerBorder);
+            box-shadow: var(--shadow);
+            border-radius: var(--radius);
+            padding: 18px 18px 16px;
+            position: sticky;
+            top: 12px;
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
 
-    .stats{
-      font-weight: 700;
-      font-size: 14px;
-      color: var(--text);
-      white-space: nowrap;
-    }
+        .headerTop {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 4px;
+        }
 
-    .bar{
-      width: 100%;
-      height: 12px;
-      border-radius: 999px;
-      background: var(--bar);
-      overflow:hidden;
-      border: 1px solid rgba(255,255,255,.08);
-    }
-    .fill{
-      height:100%;
-      width:0%;
-      background: linear-gradient(90deg, var(--barFill), var(--accent));
-      border-radius: 999px;
-      transition: width .25s ease;
-    }
+        h1 {
+            margin: 0;
+            font-size: 26px;
+            letter-spacing: .2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    .controls{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
+        .themeToggle {
+            appearance: none;
+            border: 1px solid var(--toggleBorder);
+            background: var(--toggleBg);
+            color: var(--text);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: grid;
+            place-items: center;
+            transition: all .25s ease;
+            flex-shrink: 0;
+        }
+        .themeToggle:hover {
+            background: var(--btnHoverBg);
+            border-color: var(--btnHoverBorder);
+            transform: scale(1.05);
+        }
+        .themeToggle:active {
+            transform: scale(.95);
+        }
 
-    button{
-      appearance:none;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-      padding: 10px 12px;
-      border-radius: 12px;
-      cursor:pointer;
-      font-weight: 600;
-      transition: transform .05s ease, background .2s ease, border-color .2s ease;
-    }
-    button:hover{ background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.18); }
-    button:active{ transform: scale(.98); }
+        .sub {
+            margin: 0 0 6px;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .subNote {
+            margin: 0 0 14px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.5;
+            font-weight: 500;
+        }
 
-    /* Keep reset as a “danger” action (only button style) */
-    .dangerBtn{ border-color: rgba(255,77,77,.35); }
-    .dangerBtn:hover{ background: rgba(255,77,77,.12); }
+        .progressRow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
 
-    main{
-      margin-top: 18px;
-      background: rgba(18,26,43,.70);
-      border: 1px solid rgba(255,255,255,.08);
-      box-shadow: var(--shadow);
-      border-radius: var(--radius);
-      padding: 14px;
-    }
+        .stats {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text);
+            white-space: nowrap;
+        }
 
-    .list{
-      list-style:none;
-      margin:0;
-      padding:0;
-      display:grid;
-      gap: 10px;
-    }
+        .bar {
+            width: 100%;
+            height: 12px;
+            border-radius: 999px;
+            background: var(--bar);
+            overflow: hidden;
+            border: 1px solid var(--headerBorder);
+        }
+        .fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--barFill), var(--accent));
+            border-radius: 999px;
+            transition: width .25s ease;
+        }
 
-    .item{
-      display:flex;
-      align-items:center;
-      gap: 12px;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.03);
-      cursor:pointer;
-      user-select:none;
-      transition: background .2s ease, border-color .2s ease;
-    }
-    .item:hover{
-      background: rgba(255,255,255,.06);
-      border-color: rgba(255,255,255,.12);
-    }
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
 
-    .check{
-      width: 22px;
-      height: 22px;
-      border-radius: 7px;
-      border: 2px solid rgba(255,255,255,.35);
-      display:grid;
-      place-items:center;
-      flex: 0 0 auto;
-    }
-    .check svg{ opacity:0; transform: scale(.7); transition: all .18s ease; }
+        button {
+            appearance: none;
+            border: 1px solid var(--btnBorder);
+            background: var(--btnBg);
+            color: var(--text);
+            padding: 10px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform .05s ease, background .2s ease, border-color .2s ease;
+        }
+        button:hover {
+            background: var(--btnHoverBg);
+            border-color: var(--btnHoverBorder);
+        }
+        button:active {
+            transform: scale(.98);
+        }
 
-    .title{
-      font-size: 16px;
-      line-height: 1.35;
-      font-weight: 650;
-      color: var(--text);
-    }
-    .hint{
-      margin-left:auto;
-      color: var(--muted);
-      font-size: 12px;
-      opacity: .95;
-    }
+        .dangerBtn {
+            border-color: rgba(255, 77, 77, .35);
+        }
+        .dangerBtn:hover {
+            background: rgba(255, 77, 77, .12);
+        }
 
-    /* ✅ Checked state: GREEN + strikethrough */
-    .item.checked{
-      border-color: rgba(34,197,94,.40);
-      background: rgba(34,197,94,.10);
-    }
-    .item.checked .title{
-      color: var(--success);
-      text-decoration: line-through;
-      text-decoration-thickness: 2px;
-    }
-    .item.checked .check{
-      border-color: rgba(34,197,94,.65);
-      background: rgba(34,197,94,.18);
-      color: var(--success);
-    }
-    .item.checked .check svg{
-      opacity:1;
-      transform: scale(1);
-    }
+        main {
+            margin-top: 18px;
+            background: var(--mainBg);
+            border: 1px solid var(--mainBorder);
+            box-shadow: var(--shadow);
+            border-radius: var(--radius);
+            padding: 14px;
+        }
 
-    /* Reduce motion preference */
-    @media (prefers-reduced-motion: reduce){
-      .fill, .item, .check svg { transition:none; }
-    }
-  </style>
+        .list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 10px;
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 12px;
+            border-radius: 14px;
+            border: 1px solid var(--itemBorder);
+            background: var(--itemBg);
+            cursor: pointer;
+            user-select: none;
+            transition: background .2s ease, border-color .2s ease;
+            flex-wrap: wrap;
+        }
+        .item:hover {
+            background: var(--itemHoverBg);
+            border-color: var(--itemHoverBorder);
+        }
+
+        .check {
+            width: 22px;
+            height: 22px;
+            border-radius: 7px;
+            border: 2px solid var(--checkBorder);
+            display: grid;
+            place-items: center;
+            flex: 0 0 auto;
+        }
+        .check svg {
+            opacity: 0;
+            transform: scale(.7);
+            transition: all .18s ease;
+        }
+
+        .title {
+            font-size: 15px;
+            line-height: 1.35;
+            font-weight: 650;
+            color: var(--text);
+            flex: 1 1 180px;
+            min-width: 0;
+        }
+        .hint {
+            color: var(--muted);
+            font-size: 11px;
+            opacity: .85;
+            flex: 0 0 auto;
+            white-space: nowrap;
+        }
+
+        .linkBtns {
+            display: flex;
+            gap: 5px;
+            flex: 0 0 auto;
+            align-items: center;
+        }
+        .linkBtn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px 13px;
+            border-radius: 20px;
+            border: 1px solid var(--linkBtnBorder);
+            background: var(--linkBtnBg);
+            color: var(--linkBtnColor);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all .2s ease;
+            white-space: nowrap;
+            min-width: 42px;
+            line-height: 1.3;
+        }
+        .linkBtn:hover {
+            background: var(--linkBtnHoverBg);
+            border-color: var(--linkBtnHoverBorder);
+            color: var(--accent);
+            box-shadow: 0 0 12px rgba(76, 201, 240, .15);
+        }
+        .linkBtn:active {
+            transform: scale(.96);
+        }
+        .linkBtn.half {
+            padding: 5px 8px;
+            font-size: 11px;
+            min-width: 34px;
+            border-radius: 16px;
+        }
+
+        .item.checked {
+            border-color: var(--checkedItemBorder);
+            background: var(--checkedItemBg);
+        }
+        .item.checked .title {
+            color: var(--success);
+            text-decoration: line-through;
+            text-decoration-thickness: 2px;
+        }
+        .item.checked .check {
+            border-color: var(--checkedCheckBorder);
+            background: var(--checkedCheckBg);
+            color: var(--success);
+        }
+        .item.checked .check svg {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        @media (max-width: 600px) {
+            .basmala {
+                font-size: 1.8rem;
+                padding: 16px 8px 4px;
+            }
+            .item {
+                gap: 8px;
+                padding: 10px 10px;
+            }
+            .title {
+                font-size: 13px;
+                flex: 1 1 120px;
+            }
+            .linkBtn {
+                padding: 4px 9px;
+                font-size: 10px;
+                min-width: 34px;
+                border-radius: 14px;
+            }
+            .linkBtn.half {
+                padding: 4px 6px;
+                font-size: 10px;
+                min-width: 28px;
+            }
+            .hint {
+                font-size: 10px;
+            }
+            .linkBtns {
+                gap: 3px;
+            }
+            h1 {
+                font-size: 20px;
+            }
+            .themeToggle {
+                width: 36px;
+                height: 36px;
+                font-size: 18px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .fill,
+            .item,
+            .check svg,
+            .linkBtn,
+            .themeToggle {
+                transition: none;
+            }
+        }
+    </style>
 </head>
 
 <body>
-  <div class="wrap">
-    <header>
-      <h1>📚 Internal Checklist</h1>
-      <p class="sub">
-        اضغط على اسم المحاضرة للتعليم عليها (تتحول للأخضر مع خط). التقدم محفوظ تلقائيًا على نفس الجهاز.
-      </p>
+    <!-- 🆕 البسملة في أول الصفحة -->
+    <div class="basmala">بسم الله الرحمن الرحيم</div>
 
-      <div class="progressRow">
-        <div class="stats" id="statsText">0% — 0/52</div>
-        <div class="stats" id="remainingText">Remaining: 52</div>
-      </div>
+    <div class="wrap">
+        <header>
+            <div class="headerTop">
+                <h1>📚 Internal Checklist</h1>
+                <button
+                class="themeToggle"
+                id="themeToggle"
+                title="تبديل الوضع النهاري / الداكن"
+                aria-label="Toggle dark/light mode"
+                >
+                ☀️
+            </button>
+        </div>
+        <p class="sub">
+            اضغط على اسم المحاضرة للتعليم عليها (تتحول للأخضر مع خط). التقدم محفوظ تلقائيًا على نفس الجهاز.
+        </p>
+        <p class="subNote">
+            🔗 بجانب كل محاضرة يوجد زر عليه اسم الدكتور، عند ضغطك عليه سينقلك للتفريغ على قناة الفريق الأكاديمي.
+        </p>
 
-      <div class="bar" aria-label="Progress bar">
-        <div class="fill" id="progressFill"></div>
-      </div>
+        <div class="progressRow">
+            <div class="stats" id="statsText">0% — 0/52</div>
+            <div class="stats" id="remainingText">Remaining: 52</div>
+        </div>
 
-      <div class="controls">
-        <button id="markAllBtn" title="Mark all as done">Mark all ✅</button>
-        <button id="unmarkAllBtn" title="Unmark all">Unmark all ↩️</button>
-        <button class="dangerBtn" id="resetBtn" title="Clear saved progress">Reset (clear saved) 🧹</button>
-      </div>
+        <div class="bar" aria-label="Progress bar">
+            <div class="fill" id="progressFill"></div>
+        </div>
+
+        <div class="controls">
+            <button id="markAllBtn" title="Mark all as done">Mark all ✅</button>
+            <button id="unmarkAllBtn" title="Unmark all">Unmark all ↩️</button>
+            <button class="dangerBtn" id="resetBtn" title="Clear saved progress">Reset (clear saved) 🧹</button>
+        </div>
     </header>
 
     <main>
-      <ul class="list" id="lectureList" aria-label="Lecture checklist"></ul>
+        <ul class="list" id="lectureList" aria-label="Lecture checklist"></ul>
     </main>
+</div>
 
-    <!-- ✅ Footer removed as requested -->
-  </div>
+<!-- 🆕 التذييل الثابت -->
+<div class="footer">نتمنى لكم كل التوفيق - الفريق الأكاديمي</div>
 
-  <script>
-    // ========= Data =========
+<script>
+    // ========= Lecture Data =========
     const lectures = [
-      "1. ECG",
-      "2. Hypertension",
-      "3. Pericarditis",
-      "4. Infective endocarditis",
-      "5. Cardiomyopathy",
-      "6. Arrhythmia",
-      "7. Ischemic heart disease",
-      "8. Valvular heart disease",
-      "9. Congestive heart failure (CHF)",
-      "10. Differential Differential of arthritis",
-      "11. Rheumatoidoid arthritis (RA)",
-      "12. Systemic Lupus Erythematosus (SLE)",
-      "13. Spondyloarthropathies (SpA) & Ankylosinging spondylitis (AS)",
-      "14. Gout",
-      "15. Polymyositis & dermatomyositis",
-      "16. Systemic sclerosis (SSC)",
-      "17. Vasculitis",
-      "18. Anemia 1",
-      "19. Anemia 2",
-      "20. Leukaemia",
-      "21. Lymphoma",
-      "22. Platelets disorders",
-      "23. Coagulation disorders",
-      "24. Multiple myeloma",
-      "25. Acquired Immunodeficiency Syndrome (AIDS)",
-      "26. Tuberculosis (TB)",
-      "27. Overviewiew of diabetes and it's complications",
-      "28. Diabetes mellitus (DM)",
-      "29. Thyroid disorders",
-      "30. Esophageal disorders",
-      "31. Functional Gastrointestinal (GI) disorders",
-      "32. Malabsorption",
-      "33. Inflammatory bowel disease (IBD)",
-      "34. Peptic ulcer disease (PUD) & Upper Gastrointestinal (GI) bleeding",
-      "35. Asthma",
-      "36. Chronic obstructive pulmonary disease (COPD)",
-      "37. Pneumonia",
-      "38. Interstitial lung diseases (ILD)",
-      "39. Pleural disease",
-      "40. Lung cancer",
-      "41. Cirrhosis and portal hypertension",
-      "42. Viral hepatitis",
-      "43. Chronic liver diseases",
-      "44. Pancreatitis",
-      "45. Acute kidney injury (AKI)",
-      "46. Chronic kidney disease (CKD)",
-      "47. Glomerulonephritis",
-      "48. Urinary tract infection (UTI)",
-      "49. Disorders of calcium",
-      "50. Hypernatremia",
-      "51. Hyponatremia",
-      "52. Hypokalemia & hyperkalemia",
+        "1. ECG",
+        "2. Hypertension",
+        "3. Pericarditis",
+        "4. Infective endocarditis",
+        "5. Cardiomyopathy",
+        "6. Arrhythmia",
+        "7. Ischemic heart disease",
+        "8. Valvular heart disease",
+        "9. Congestive heart failure (CHF)",
+        "10. Differential Differential of arthritis",
+        "11. Rheumatoidoid arthritis (RA)",
+        "12. Systemic Lupus Erythematosus (SLE)",
+        "13. Spondyloarthropathies (SpA) & Ankylosinging spondylitis (AS)",
+        "14. Gout",
+        "15. Polymyositis & dermatomyositis",
+        "16. Systemic sclerosis (SSC)",
+        "17. Vasculitis",
+        "18. Anemia 1",
+        "19. Anemia 2",
+        "20. Leukaemia",
+        "21. Lymphoma",
+        "22. Platelets disorders",
+        "23. Coagulation disorders",
+        "24. Multiple myeloma",
+        "25. Acquired Immunodeficiency Syndrome (AIDS)",
+        "26. Tuberculosis (TB)",
+        "27. Overviewiew of diabetes and it's complications",
+        "28. Diabetes mellitus (DM)",
+        "29. Thyroid disorders",
+        "30. Esophageal disorders",
+        "31. Functional Gastrointestinal (GI) disorders",
+        "32. Malabsorption",
+        "33. Inflammatory bowel disease (IBD)",
+        "34. Peptic ulcer disease (PUD) & Upper Gastrointestinal (GI) bleeding",
+        "35. Asthma",
+        "36. Chronic obstructive pulmonary disease (COPD)",
+        "37. Pneumonia",
+        "38. Interstitial lung diseases (ILD)",
+        "39. Pleural disease",
+        "40. Lung cancer",
+        "41. Cirrhosis and portal hypertension",
+        "42. Viral hepatitis",
+        "43. Chronic liver diseases",
+        "44. Pancreatitis",
+        "45. Acute kidney injury (AKI)",
+        "46. Chronic kidney disease (CKD)",
+        "47. Glomerulonephritis",
+        "48. Urinary tract infection (UTI)",
+        "49. Disorders of calcium",
+        "50. Hyponatremia",
+        "51. Hypernatremia",
+        "52. Hypokalemia & hyperkalemia",
     ];
-    const TOTAL = lectures.length; // 52
 
-    // ========= Storage =========
+    const lectureLinks = [
+        [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10943" }],
+        [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10944" }],
+        [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10945" }],
+        [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10946" }],
+        [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10947" }],
+        [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10948" }],
+        [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10949" }],
+        [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10951" }],
+        [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10952" }],
+        [{ name: "جريس", url: "https://t.me/c/1910651481/9065/11049" }],
+        [{ name: "جريس", url: "https://t.me/c/1910651481/9065/10963" }],
+        [{ name: "جريس", url: "https://t.me/c/1910651481/9065/10964" }],
+        [{ name: "جريس", url: "https://t.me/c/1910651481/9065/11045" }],
+        [{ name: "جريس", url: "https://t.me/c/1910651481/9065/11048" }],
+        [{ name: "جريس", url: "https://t.me/c/1910651481/9065/11388" }],
+        [{ name: "جريس", url: "https://t.me/c/1910651481/9065/11389" }],
+        [{ name: "جريس", url: "https://t.me/c/1910651481/9065/11047" }],
+        [{ name: "علي", url: "https://t.me/c/1910651481/9065/11084" }],
+        [{ name: "علي", url: "https://t.me/c/1910651481/9065/11085" }],
+        [
+            { name: "علي", url: "https://t.me/c/1910651481/9065/11086" },
+            { name: "إيناس", url: "https://t.me/c/1910651481/9065/11433" },
+        ],
+        [
+            { name: "علي", url: "https://t.me/c/1910651481/9065/11087" },
+            { name: "إيناس", url: "https://t.me/c/1910651481/9065/11432" },
+        ],
+        [
+            { name: "علي", url: "https://t.me/c/1910651481/9065/11186" },
+            { name: "إيناس", url: "https://t.me/c/1910651481/9065/11431" },
+        ],
+        [
+            { name: "علي", url: "https://t.me/c/1910651481/9065/11185" },
+            { name: "إيناس", url: "https://t.me/c/1910651481/9065/11435" },
+        ],
+        [{ name: "بندر", url: "https://t.me/c/1910651481/9065/11443" }],
+        [{ name: "علي", url: "https://t.me/c/1910651481/9065/11188" }],
+        [{ name: "علي", url: "https://t.me/c/1910651481/9065/11187" }],
+        [{ name: "سفيان", url: "https://t.me/c/1910651481/9065/11009" }],
+        [{ name: "سفيان", url: "https://t.me/c/1910651481/9065/11010" }],
+        [{ name: "غيث", url: "https://t.me/c/1910651481/9065/11142" }],
+        [{ name: "سارة", url: "https://t.me/c/1910651481/9065/11249" }],
+        [{ name: "طارق", url: "https://t.me/c/1910651481/9065/11088" }],
+        [{ name: "طارق", url: "https://t.me/c/1910651481/9065/11089" }],
+        [{ name: "طارق", url: "https://t.me/c/1910651481/9065/11090" }],
+        [{ name: "طارق", url: "https://t.me/c/1910651481/9065/11091" }],
+        [{ name: "غيث", url: "https://t.me/c/1910651481/9065/11136" }],
+        [{ name: "غيث", url: "https://t.me/c/1910651481/9065/11141" }],
+        [{ name: "بندر", url: "https://t.me/c/1910651481/9065/11444" }],
+        [{ name: "غيث", url: "https://t.me/c/1910651481/9065/11137" }],
+        [{ name: "غيث", url: "https://t.me/c/1910651481/9065/11140" }],
+        [{ name: "علي", url: "https://t.me/c/1910651481/9065/11184" }],
+        [{ name: "سارة", url: "https://t.me/c/1910651481/9065/11252" }],
+        [{ name: "سارة", url: "https://t.me/c/1910651481/9065/11250" }],
+        [{ name: "سارة", url: "https://t.me/c/1910651481/9065/11251" }],
+        [{ name: "سارة", url: "https://t.me/c/1910651481/9065/11247" }],
+        [{ name: "فؤاد", url: "https://t.me/c/1910651481/9065/11370" }],
+        [{ name: "فؤاد", url: "https://t.me/c/1910651481/9065/11372" }],
+        [{ name: "فؤاد", url: "https://t.me/c/1910651481/9065/11384" }],
+        [{ name: "فؤاد", url: "https://t.me/c/1910651481/9065/11396" }],
+        [{ name: "سفيان", url: "https://t.me/c/1910651481/9065/11011" }],
+        [{ name: "فؤاد", url: "https://t.me/c/1910651481/9065/11390" }],
+        [{ name: "فؤاد", url: "https://t.me/c/1910651481/9065/11395" }],
+        [{ name: "بندر", url: "https://t.me/c/1910651481/9065/11442" }],
+    ];
+
+    const TOTAL = lectures.length;
+
     const STORAGE_KEY = "internalChecklist_v1";
-    function loadState(){
-      try{
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if(!raw) return new Array(TOTAL).fill(false);
-        const parsed = JSON.parse(raw);
-        if(!Array.isArray(parsed) || parsed.length !== TOTAL) return new Array(TOTAL).fill(false);
-        return parsed.map(Boolean);
-      }catch{
-        return new Array(TOTAL).fill(false);
-      }
-    }
-    function saveState(state){
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    const THEME_KEY = "internalChecklist_theme";
+
+    function loadState() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return new Array(TOTAL).fill(false);
+            const parsed = JSON.parse(raw);
+            if (!Array.isArray(parsed) || parsed.length !== TOTAL) return new Array(TOTAL).fill(false);
+            return parsed.map(Boolean);
+        } catch {
+            return new Array(TOTAL).fill(false);
+        }
     }
 
-    // ========= UI =========
+    function saveState(state) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function loadTheme() {
+        const saved = localStorage.getItem(THEME_KEY);
+        return saved === "light" ? "light" : "dark";
+    }
+
+    function applyTheme(theme) {
+        document.documentElement.setAttribute("data-theme", theme);
+        const btn = document.getElementById("themeToggle");
+        if (btn) {
+            btn.textContent = theme === "light" ? "🌙" : "☀️";
+            btn.title = theme === "light" ? "تبديل للوضع الداكن" : "تبديل للوضع النهاري";
+        }
+        localStorage.setItem(THEME_KEY, theme);
+    }
+
+    function toggleTheme() {
+        const current = document.documentElement.getAttribute("data-theme") || "dark";
+        const next = current === "dark" ? "light" : "dark";
+        applyTheme(next);
+    }
+
     const listEl = document.getElementById("lectureList");
     const statsText = document.getElementById("statsText");
     const remainingText = document.getElementById("remainingText");
     const progressFill = document.getElementById("progressFill");
-
     const markAllBtn = document.getElementById("markAllBtn");
     const unmarkAllBtn = document.getElementById("unmarkAllBtn");
     const resetBtn = document.getElementById("resetBtn");
+    const themeToggleBtn = document.getElementById("themeToggle");
 
     let state = loadState();
 
-    function makeItem(title, index){
-      const li = document.createElement("li");
-      li.className = "item";
-      li.setAttribute("role", "button");
-      li.setAttribute("tabindex", "0");
-      li.dataset.index = index;
+    function makeItem(title, index) {
+        const li = document.createElement("li");
+        li.className = "item";
+        li.setAttribute("role", "button");
+        li.setAttribute("tabindex", "0");
+        li.dataset.index = index;
 
-      li.innerHTML = `
-        <div class="check" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div class="title"></div>
-        <div class="hint">click</div>
-      `;
-      li.querySelector(".title").textContent = title;
+        li.innerHTML = `
+            <div class="check" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="title"></div>
+            <div class="linkBtns"></div>
+            <div class="hint">click</div>
+        `;
 
-      li.addEventListener("click", () => toggle(index));
-      li.addEventListener("keydown", (e) => {
-        if(e.key === "Enter" || e.key === " "){
-          e.preventDefault();
-          toggle(index);
-        }
-      });
+        li.querySelector(".title").textContent = title;
 
-      return li;
+        const btnsContainer = li.querySelector(".linkBtns");
+        const links = lectureLinks[index] || [];
+        links.forEach((link) => {
+            const a = document.createElement("a");
+            a.className = "linkBtn";
+            if (links.length > 1) {
+                a.classList.add("half");
+            }
+            a.href = link.url;
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+            a.textContent = link.name;
+            a.title = link.name + " — فتح التفريغ";
+            a.addEventListener("click", (e) => {
+                e.stopPropagation();
+            });
+            btnsContainer.appendChild(a);
+        });
+
+        li.addEventListener("click", (e) => {
+            if (e.target.closest(".linkBtn")) return;
+            toggle(index);
+        });
+        li.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+                if (document.activeElement && document.activeElement.closest(".linkBtn")) return;
+                e.preventDefault();
+                toggle(index);
+            }
+        });
+
+        return li;
     }
 
-    function render(){
-      listEl.innerHTML = "";
-      lectures.forEach((t, i) => {
-        const item = makeItem(t, i);
-        if(state[i]) item.classList.add("checked");
-        listEl.appendChild(item);
-      });
-      updateProgress();
+    function render() {
+        listEl.innerHTML = "";
+        lectures.forEach((t, i) => {
+            const item = makeItem(t, i);
+            if (state[i]) item.classList.add("checked");
+            listEl.appendChild(item);
+        });
+        updateProgress();
     }
 
-    function toggle(index){
-      state[index] = !state[index];
-      saveState(state);
-
-      const item = listEl.querySelector(`.item[data-index="${index}"]`);
-      if(item) item.classList.toggle("checked", state[index]);
-
-      updateProgress();
+    function toggle(index) {
+        state[index] = !state[index];
+        saveState(state);
+        const item = listEl.querySelector(`.item[data-index="${index}"]`);
+        if (item) item.classList.toggle("checked", state[index]);
+        updateProgress();
     }
 
-    function updateProgress(){
-      const done = state.filter(Boolean).length;
-      const percent = Math.round((done / TOTAL) * 100);
-      statsText.textContent = `${percent}% — ${done}/${TOTAL}`;
-      remainingText.textContent = `Remaining: ${TOTAL - done}`;
-      progressFill.style.width = `${percent}%`;
+    function updateProgress() {
+        const done = state.filter(Boolean).length;
+        const percent = Math.round((done / TOTAL) * 100);
+        statsText.textContent = `${percent}% — ${done}/${TOTAL}`;
+        remainingText.textContent = `Remaining: ${TOTAL - done}`;
+        progressFill.style.width = `${percent}%`;
     }
 
-    // Controls
     markAllBtn.addEventListener("click", () => {
-      state = new Array(TOTAL).fill(true);
-      saveState(state);
-      render();
+        state = new Array(TOTAL).fill(true);
+        saveState(state);
+        render();
     });
-
     unmarkAllBtn.addEventListener("click", () => {
-      state = new Array(TOTAL).fill(false);
-      saveState(state);
-      render();
+        state = new Array(TOTAL).fill(false);
+        saveState(state);
+        render();
     });
-
     resetBtn.addEventListener("click", () => {
-      localStorage.removeItem(STORAGE_KEY);
-      state = new Array(TOTAL).fill(false);
-      render();
+        localStorage.removeItem(STORAGE_KEY);
+        state = new Array(TOTAL).fill(false);
+        render();
     });
 
-    // Init
+    themeToggleBtn.addEventListener("click", toggleTheme);
+    applyTheme(loadTheme());
+
     render();
-  </script>
+</script>
 </body>
 </html>
