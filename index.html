@@ -58,7 +58,7 @@
             --shadow: 0 10px 30px rgba(0, 0, 0, .08);
             --bgGradient: radial-gradient(1000px 600px at 20% 10%, #e0e7ff 0%, var(--bg) 55%) fixed;
             --headerBorder: rgba(0, 0, 0, .06);
-            --headerBg: rgba(255, 255, 255, 0.85);
+            --headerBg: linear-gradient(180deg, rgba(37, 99, 235, .08), rgba(255, 255, 255, .0));
             --mainBg: rgba(255, 255, 255, .75);
             --mainBorder: rgba(0, 0, 0, .06);
             --itemBg: rgba(0, 0, 0, .02);
@@ -104,7 +104,7 @@
             padding: 24px 16px 8px;
             margin: 0;
             letter-spacing: 1px;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            text-shadow: 0 2px 8px rgba(0,0,0,0.15);
             transition: color 0.3s ease;
         }
 
@@ -120,32 +120,8 @@
 
         .wrap {
             max-width: 920px;
-            margin: 0 auto;
-            padding: 0 16px 10px;
-        }
-
-        /* ── شريط التثبيت (sticky header) ── */
-        .stickyBar {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: var(--bg);
-            padding: 8px 16px 0;
-            margin: 0 -16px;
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            background: rgba(11, 18, 32, 0.82);
-            border-bottom: 1px solid var(--headerBorder);
-            transition: background 0.3s ease;
-        }
-        [data-theme="light"] .stickyBar {
-            background: rgba(241, 245, 249, 0.88);
-        }
-
-        .stickyBarInner {
-            max-width: 920px;
-            margin: 0 auto;
-            padding: 0;
+            margin: 32px auto 0;
+            padding: 0 16px 40px;
         }
 
         header {
@@ -154,6 +130,7 @@
             box-shadow: var(--shadow);
             border-radius: var(--radius);
             padding: 18px 18px 16px;
+            /* تمت إزالة position: sticky ليختفي عند التمرير */
         }
 
         .headerTop {
@@ -400,7 +377,7 @@
             transform: scale(1);
         }
 
-        /* ── حوار التأكيد (modal) ── */
+        /* نافذة التأكيد */
         .modalOverlay {
             position: fixed;
             inset: 0;
@@ -496,9 +473,6 @@
                 height: 36px;
                 font-size: 18px;
             }
-            .stickyBar {
-                padding: 6px 12px 0;
-            }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -517,18 +491,12 @@
 <body>
     <div class="basmala">بسم الله الرحمن الرحيم</div>
 
-    <!-- 🆕 شريط مثبت يلتف حول الهيدر كاملاً -->
-    <div class="stickyBar">
-        <div class="stickyBarInner">
-            <header>
-                <div class="headerTop">
-                    <h1>📚 Internal Checklist</h1>
-                    <button
-                    class="themeToggle"
-                    id="themeToggle"
-                    title="تبديل الوضع النهاري / الداكن"
-                    aria-label="Toggle dark/light mode"
-                    >
+    <div class="wrap">
+        <!-- الهيدر بدون تثبيت -->
+        <header>
+            <div class="headerTop">
+                <h1>📚 Internal Checklist</h1>
+                <button class="themeToggle" id="themeToggle" title="تبديل الوضع النهاري / الداكن" aria-label="Toggle dark/light mode">
                     ☀️
                 </button>
             </div>
@@ -550,324 +518,289 @@
 
             <div class="controls">
                 <button id="markAllBtn" title="Mark all as done">Mark all ✅</button>
-                <!-- 🗑️ زر Unmark all محذوف -->
                 <button class="dangerBtn" id="resetBtn" title="Clear saved progress">Reset (clear saved) 🧹</button>
             </div>
         </header>
+
+        <main>
+            <ul class="list" id="lectureList" aria-label="Lecture checklist"></ul>
+        </main>
     </div>
-</div>
 
-<div class="wrap">
-    <main>
-        <ul class="list" id="lectureList" aria-label="Lecture checklist"></ul>
-    </main>
-</div>
+    <div class="footer">نتمنى لكم كل التوفيق - الفريق الأكاديمي</div>
 
-<div class="footer">نتمنى لكم كل التوفيق - الفريق الأكاديمي</div>
-
-<!-- 🆕 نافذة تأكيد الحذف -->
-<div class="modalOverlay" id="confirmModal">
-    <div class="modalBox">
-        <p>⚠️ هل أنت متأكد من حذف كل التقدم؟<br>لا يمكن التراجع عن هذا الإجراء.</p>
-        <div class="modalBtns">
-            <button class="confirmYes" id="confirmYesBtn">نعم، احذف</button>
-            <button class="confirmNo" id="confirmNoBtn">إلغاء</button>
+    <!-- نافذة تأكيد الحذف -->
+    <div class="modalOverlay" id="confirmModal">
+        <div class="modalBox">
+            <p>⚠️ هل أنت متأكد من حذف كل التقدم؟<br>لا يمكن التراجع عن هذا الإجراء.</p>
+            <div class="modalBtns">
+                <button class="confirmYes" id="confirmYesBtn">نعم، احذف</button>
+                <button class="confirmNo" id="confirmNoBtn">إلغاء</button>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-    // ========= Lecture Data =========
-    const lectures = [
-        "1. ECG",
-        "2. Hypertension",
-        "3. Pericarditis",
-        "4. Infective endocarditis",
-        "5. Cardiomyopathy",
-        "6. Arrhythmia",
-        "7. Ischemic heart disease",
-        "8. Valvular heart disease",
-        "9. Congestive heart failure (CHF)",
-        "10. Differential Differential of arthritis",
-        "11. Rheumatoidoid arthritis (RA)",
-        "12. Systemic Lupus Erythematosus (SLE)",
-        "13. Spondyloarthropathies (SpA) & Ankylosinging spondylitis (AS)",
-        "14. Gout",
-        "15. Polymyositis & dermatomyositis",
-        "16. Systemic sclerosis (SSC)",
-        "17. Vasculitis",
-        "18. Anemia 1",
-        "19. Anemia 2",
-        "20. Leukaemia",
-        "21. Lymphoma",
-        "22. Platelets disorders",
-        "23. Coagulation disorders",
-        "24. Multiple myeloma",
-        "25. Acquired Immunodeficiency Syndrome (AIDS)",
-        "26. Tuberculosis (TB)",
-        "27. Overviewiew of diabetes and it's complications",
-        "28. Diabetes mellitus (DM)",
-        "29. Thyroid disorders",
-        "30. Esophageal disorders",
-        "31. Functional Gastrointestinal (GI) disorders",
-        "32. Malabsorption",
-        "33. Inflammatory bowel disease (IBD)",
-        "34. Peptic ulcer disease (PUD) & Upper Gastrointestinal (GI) bleeding",
-        "35. Asthma",
-        "36. Chronic obstructive pulmonary disease (COPD)",
-        "37. Pneumonia",
-        "38. Interstitial lung diseases (ILD)",
-        "39. Pleural disease",
-        "40. Lung cancer",
-        "41. Cirrhosis and portal hypertension",
-        "42. Viral hepatitis",
-        "43. Chronic liver diseases",
-        "44. Pancreatitis",
-        "45. Acute kidney injury (AKI)",
-        "46. Chronic kidney disease (CKD)",
-        "47. Glomerulonephritis",
-        "48. Urinary tract infection (UTI)",
-        "49. Disorders of calcium",
-        "50. Hyponatremia",
-        "51. Hypernatremia",
-        "52. Hypokalemia & hyperkalemia",
-    ];
+    <script>
+        // ========= Lecture Data =========
+        const lectures = [
+            "1. ECG", "2. Hypertension", "3. Pericarditis", "4. Infective endocarditis",
+            "5. Cardiomyopathy", "6. Arrhythmia", "7. Ischemic heart disease",
+            "8. Valvular heart disease", "9. Congestive heart failure (CHF)",
+            "10. Differential Differential of arthritis", "11. Rheumatoidoid arthritis (RA)",
+            "12. Systemic Lupus Erythematosus (SLE)",
+            "13. Spondyloarthropathies (SpA) & Ankylosinging spondylitis (AS)",
+            "14. Gout", "15. Polymyositis & dermatomyositis", "16. Systemic sclerosis (SSC)",
+            "17. Vasculitis", "18. Anemia 1", "19. Anemia 2", "20. Leukaemia",
+            "21. Lymphoma", "22. Platelets disorders", "23. Coagulation disorders",
+            "24. Multiple myeloma", "25. Acquired Immunodeficiency Syndrome (AIDS)",
+            "26. Tuberculosis (TB)", "27. Overviewiew of diabetes and it's complications",
+            "28. Diabetes mellitus (DM)", "29. Thyroid disorders", "30. Esophageal disorders",
+            "31. Functional Gastrointestinal (GI) disorders", "32. Malabsorption",
+            "33. Inflammatory bowel disease (IBD)",
+            "34. Peptic ulcer disease (PUD) & Upper Gastrointestinal (GI) bleeding",
+            "35. Asthma", "36. Chronic obstructive pulmonary disease (COPD)", "37. Pneumonia",
+            "38. Interstitial lung diseases (ILD)", "39. Pleural disease", "40. Lung cancer",
+            "41. Cirrhosis and portal hypertension", "42. Viral hepatitis",
+            "43. Chronic liver diseases", "44. Pancreatitis", "45. Acute kidney injury (AKI)",
+            "46. Chronic kidney disease (CKD)", "47. Glomerulonephritis",
+            "48. Urinary tract infection (UTI)", "49. Disorders of calcium",
+            "50. Hyponatremia", "51. Hypernatremia", "52. Hypokalemia & hyperkalemia",
+        ];
 
-    const lectureLinks = [
-        [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10943" }],
-        [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10944" }],
-        [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10945" }],
-        [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10946" }],
-        [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10947" }],
-        [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10948" }],
-        [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10949" }],
-        [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10951" }],
-        [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10952" }],
-        [{ name: "جريس", url: "https://t.me/c/1910651481/9065/11049" }],
-        [{ name: "جريس", url: "https://t.me/c/1910651481/9065/10963" }],
-        [{ name: "جريس", url: "https://t.me/c/1910651481/9065/10964" }],
-        [{ name: "جريس", url: "https://t.me/c/1910651481/9065/11045" }],
-        [{ name: "جريس", url: "https://t.me/c/1910651481/9065/11048" }],
-        [{ name: "جريس", url: "https://t.me/c/1910651481/9065/11388" }],
-        [{ name: "جريس", url: "https://t.me/c/1910651481/9065/11389" }],
-        [{ name: "جريس", url: "https://t.me/c/1910651481/9065/11047" }],
-        [{ name: "علي", url: "https://t.me/c/1910651481/9065/11084" }],
-        [{ name: "علي", url: "https://t.me/c/1910651481/9065/11085" }],
-        [
-            { name: "علي", url: "https://t.me/c/1910651481/9065/11086" },
-            { name: "إيناس", url: "https://t.me/c/1910651481/9065/11433" },
-        ],
-        [
-            { name: "علي", url: "https://t.me/c/1910651481/9065/11087" },
-            { name: "إيناس", url: "https://t.me/c/1910651481/9065/11432" },
-        ],
-        [
-            { name: "علي", url: "https://t.me/c/1910651481/9065/11186" },
-            { name: "إيناس", url: "https://t.me/c/1910651481/9065/11431" },
-        ],
-        [
-            { name: "علي", url: "https://t.me/c/1910651481/9065/11185" },
-            { name: "إيناس", url: "https://t.me/c/1910651481/9065/11435" },
-        ],
-        [{ name: "بندر", url: "https://t.me/c/1910651481/9065/11443" }],
-        [{ name: "علي", url: "https://t.me/c/1910651481/9065/11188" }],
-        [{ name: "علي", url: "https://t.me/c/1910651481/9065/11187" }],
-        [{ name: "سفيان", url: "https://t.me/c/1910651481/9065/11009" }],
-        [{ name: "سفيان", url: "https://t.me/c/1910651481/9065/11010" }],
-        [{ name: "غيث", url: "https://t.me/c/1910651481/9065/11142" }],
-        [{ name: "سارة", url: "https://t.me/c/1910651481/9065/11249" }],
-        [{ name: "طارق", url: "https://t.me/c/1910651481/9065/11088" }],
-        [{ name: "طارق", url: "https://t.me/c/1910651481/9065/11089" }],
-        [{ name: "طارق", url: "https://t.me/c/1910651481/9065/11090" }],
-        [{ name: "طارق", url: "https://t.me/c/1910651481/9065/11091" }],
-        [{ name: "غيث", url: "https://t.me/c/1910651481/9065/11136" }],
-        [{ name: "غيث", url: "https://t.me/c/1910651481/9065/11141" }],
-        [{ name: "بندر", url: "https://t.me/c/1910651481/9065/11444" }],
-        [{ name: "غيث", url: "https://t.me/c/1910651481/9065/11137" }],
-        [{ name: "غيث", url: "https://t.me/c/1910651481/9065/11140" }],
-        [{ name: "علي", url: "https://t.me/c/1910651481/9065/11184" }],
-        [{ name: "سارة", url: "https://t.me/c/1910651481/9065/11252" }],
-        [{ name: "سارة", url: "https://t.me/c/1910651481/9065/11250" }],
-        [{ name: "سارة", url: "https://t.me/c/1910651481/9065/11251" }],
-        [{ name: "سارة", url: "https://t.me/c/1910651481/9065/11247" }],
-        [{ name: "فؤاد", url: "https://t.me/c/1910651481/9065/11370" }],
-        [{ name: "فؤاد", url: "https://t.me/c/1910651481/9065/11372" }],
-        [{ name: "فؤاد", url: "https://t.me/c/1910651481/9065/11384" }],
-        [{ name: "فؤاد", url: "https://t.me/c/1910651481/9065/11396" }],
-        [{ name: "سفيان", url: "https://t.me/c/1910651481/9065/11011" }],
-        [{ name: "فؤاد", url: "https://t.me/c/1910651481/9065/11390" }],
-        [{ name: "فؤاد", url: "https://t.me/c/1910651481/9065/11395" }],
-        [{ name: "بندر", url: "https://t.me/c/1910651481/9065/11442" }],
-    ];
+        const lectureLinks = [
+            [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10943" }],
+            [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10944" }],
+            [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10945" }],
+            [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10946" }],
+            [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10947" }],
+            [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10948" }],
+            [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10949" }],
+            [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10951" }],
+            [{ name: "جمال", url: "https://t.me/c/1910651481/9065/10952" }],
+            [{ name: "جريس", url: "https://t.me/c/1910651481/9065/11049" }],
+            [{ name: "جريس", url: "https://t.me/c/1910651481/9065/10963" }],
+            [{ name: "جريس", url: "https://t.me/c/1910651481/9065/10964" }],
+            [{ name: "جريس", url: "https://t.me/c/1910651481/9065/11045" }],
+            [{ name: "جريس", url: "https://t.me/c/1910651481/9065/11048" }],
+            [{ name: "جريس", url: "https://t.me/c/1910651481/9065/11388" }],
+            [{ name: "جريس", url: "https://t.me/c/1910651481/9065/11389" }],
+            [{ name: "جريس", url: "https://t.me/c/1910651481/9065/11047" }],
+            [{ name: "علي", url: "https://t.me/c/1910651481/9065/11084" }],
+            [{ name: "علي", url: "https://t.me/c/1910651481/9065/11085" }],
+            [
+                { name: "علي", url: "https://t.me/c/1910651481/9065/11086" },
+                { name: "إيناس", url: "https://t.me/c/1910651481/9065/11433" },
+            ],
+            [
+                { name: "علي", url: "https://t.me/c/1910651481/9065/11087" },
+                { name: "إيناس", url: "https://t.me/c/1910651481/9065/11432" },
+            ],
+            [
+                { name: "علي", url: "https://t.me/c/1910651481/9065/11186" },
+                { name: "إيناس", url: "https://t.me/c/1910651481/9065/11431" },
+            ],
+            [
+                { name: "علي", url: "https://t.me/c/1910651481/9065/11185" },
+                { name: "إيناس", url: "https://t.me/c/1910651481/9065/11435" },
+            ],
+            [{ name: "بندر", url: "https://t.me/c/1910651481/9065/11443" }],
+            [{ name: "علي", url: "https://t.me/c/1910651481/9065/11188" }],
+            [{ name: "علي", url: "https://t.me/c/1910651481/9065/11187" }],
+            [{ name: "سفيان", url: "https://t.me/c/1910651481/9065/11009" }],
+            [{ name: "سفيان", url: "https://t.me/c/1910651481/9065/11010" }],
+            [{ name: "غيث", url: "https://t.me/c/1910651481/9065/11142" }],
+            [{ name: "سارة", url: "https://t.me/c/1910651481/9065/11249" }],
+            [{ name: "طارق", url: "https://t.me/c/1910651481/9065/11088" }],
+            [{ name: "طارق", url: "https://t.me/c/1910651481/9065/11089" }],
+            [{ name: "طارق", url: "https://t.me/c/1910651481/9065/11090" }],
+            [{ name: "طارق", url: "https://t.me/c/1910651481/9065/11091" }],
+            [{ name: "غيث", url: "https://t.me/c/1910651481/9065/11136" }],
+            [{ name: "غيث", url: "https://t.me/c/1910651481/9065/11141" }],
+            [{ name: "بندر", url: "https://t.me/c/1910651481/9065/11444" }],
+            [{ name: "غيث", url: "https://t.me/c/1910651481/9065/11137" }],
+            [{ name: "غيث", url: "https://t.me/c/1910651481/9065/11140" }],
+            [{ name: "علي", url: "https://t.me/c/1910651481/9065/11184" }],
+            [{ name: "سارة", url: "https://t.me/c/1910651481/9065/11252" }],
+            [{ name: "سارة", url: "https://t.me/c/1910651481/9065/11250" }],
+            [{ name: "سارة", url: "https://t.me/c/1910651481/9065/11251" }],
+            [{ name: "سارة", url: "https://t.me/c/1910651481/9065/11247" }],
+            [{ name: "فؤاد", url: "https://t.me/c/1910651481/9065/11370" }],
+            [{ name: "فؤاد", url: "https://t.me/c/1910651481/9065/11372" }],
+            [{ name: "فؤاد", url: "https://t.me/c/1910651481/9065/11384" }],
+            [{ name: "فؤاد", url: "https://t.me/c/1910651481/9065/11396" }],
+            [{ name: "سفيان", url: "https://t.me/c/1910651481/9065/11011" }],
+            [{ name: "فؤاد", url: "https://t.me/c/1910651481/9065/11390" }],
+            [{ name: "فؤاد", url: "https://t.me/c/1910651481/9065/11395" }],
+            [{ name: "بندر", url: "https://t.me/c/1910651481/9065/11442" }],
+        ];
 
-    const TOTAL = lectures.length;
-    const STORAGE_KEY = "internalChecklist_v1";
-    const THEME_KEY = "internalChecklist_theme";
+        const TOTAL = lectures.length;
+        const STORAGE_KEY = "internalChecklist_v1";
+        const THEME_KEY = "internalChecklist_theme";
 
-    function loadState() {
-        try {
-            const raw = localStorage.getItem(STORAGE_KEY);
-            if (!raw) return new Array(TOTAL).fill(false);
-            const parsed = JSON.parse(raw);
-            if (!Array.isArray(parsed) || parsed.length !== TOTAL) return new Array(TOTAL).fill(false);
-            return parsed.map(Boolean);
-        } catch {
-            return new Array(TOTAL).fill(false);
-        }
-    }
-
-    function saveState(state) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    }
-
-    function loadTheme() {
-        const saved = localStorage.getItem(THEME_KEY);
-        return saved === "light" ? "light" : "dark";
-    }
-
-    function applyTheme(theme) {
-        document.documentElement.setAttribute("data-theme", theme);
-        const btn = document.getElementById("themeToggle");
-        if (btn) {
-            btn.textContent = theme === "light" ? "🌙" : "☀️";
-            btn.title = theme === "light" ? "تبديل للوضع الداكن" : "تبديل للوضع النهاري";
-        }
-        localStorage.setItem(THEME_KEY, theme);
-    }
-
-    function toggleTheme() {
-        const current = document.documentElement.getAttribute("data-theme") || "dark";
-        const next = current === "dark" ? "light" : "dark";
-        applyTheme(next);
-    }
-
-    // ── نافذة التأكيد ──
-    const confirmModal = document.getElementById("confirmModal");
-    const confirmYesBtn = document.getElementById("confirmYesBtn");
-    const confirmNoBtn = document.getElementById("confirmNoBtn");
-
-    function showConfirmModal() {
-        confirmModal.classList.add("active");
-    }
-    function hideConfirmModal() {
-        confirmModal.classList.remove("active");
-    }
-
-    confirmYesBtn.addEventListener("click", () => {
-        localStorage.removeItem(STORAGE_KEY);
-        state = new Array(TOTAL).fill(false);
-        render();
-        hideConfirmModal();
-    });
-    confirmNoBtn.addEventListener("click", hideConfirmModal);
-    confirmModal.addEventListener("click", (e) => {
-        if (e.target === confirmModal) hideConfirmModal();
-    });
-
-    // ── UI ──
-    const listEl = document.getElementById("lectureList");
-    const statsText = document.getElementById("statsText");
-    const remainingText = document.getElementById("remainingText");
-    const progressFill = document.getElementById("progressFill");
-    const markAllBtn = document.getElementById("markAllBtn");
-    const resetBtn = document.getElementById("resetBtn");
-    const themeToggleBtn = document.getElementById("themeToggle");
-
-    let state = loadState();
-
-    function makeItem(title, index) {
-        const li = document.createElement("li");
-        li.className = "item";
-        li.setAttribute("role", "button");
-        li.setAttribute("tabindex", "0");
-        li.dataset.index = index;
-
-        li.innerHTML = `
-            <div class="check" aria-hidden="true">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                    <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
-            <div class="title"></div>
-            <div class="linkBtns"></div>
-            <div class="hint">click</div>
-        `;
-
-        li.querySelector(".title").textContent = title;
-
-        const btnsContainer = li.querySelector(".linkBtns");
-        const links = lectureLinks[index] || [];
-        links.forEach((link) => {
-            const a = document.createElement("a");
-            a.className = "linkBtn";
-            if (links.length > 1) {
-                a.classList.add("half");
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return new Array(TOTAL).fill(false);
+                const parsed = JSON.parse(raw);
+                if (!Array.isArray(parsed) || parsed.length !== TOTAL) return new Array(TOTAL).fill(false);
+                return parsed.map(Boolean);
+            } catch {
+                return new Array(TOTAL).fill(false);
             }
-            a.href = link.url;
-            a.target = "_blank";
-            a.rel = "noopener noreferrer";
-            a.textContent = link.name;
-            a.title = link.name + " — فتح التفريغ";
-            a.addEventListener("click", (e) => {
-                e.stopPropagation();
+        }
+
+        function saveState(state) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        }
+
+        function loadTheme() {
+            const saved = localStorage.getItem(THEME_KEY);
+            return saved === "light" ? "light" : "dark";
+        }
+
+        function applyTheme(theme) {
+            document.documentElement.setAttribute("data-theme", theme);
+            const btn = document.getElementById("themeToggle");
+            if (btn) {
+                btn.textContent = theme === "light" ? "🌙" : "☀️";
+                btn.title = theme === "light" ? "تبديل للوضع الداكن" : "تبديل للوضع النهاري";
+            }
+            localStorage.setItem(THEME_KEY, theme);
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute("data-theme") || "dark";
+            const next = current === "dark" ? "light" : "dark";
+            applyTheme(next);
+        }
+
+        // نافذة التأكيد
+        const confirmModal = document.getElementById("confirmModal");
+        const confirmYesBtn = document.getElementById("confirmYesBtn");
+        const confirmNoBtn = document.getElementById("confirmNoBtn");
+
+        function showConfirmModal() {
+            confirmModal.classList.add("active");
+        }
+        function hideConfirmModal() {
+            confirmModal.classList.remove("active");
+        }
+
+        confirmYesBtn.addEventListener("click", () => {
+            localStorage.removeItem(STORAGE_KEY);
+            state = new Array(TOTAL).fill(false);
+            render();
+            hideConfirmModal();
+        });
+        confirmNoBtn.addEventListener("click", hideConfirmModal);
+        confirmModal.addEventListener("click", (e) => {
+            if (e.target === confirmModal) hideConfirmModal();
+        });
+
+        // عناصر واجهة المستخدم
+        const listEl = document.getElementById("lectureList");
+        const statsText = document.getElementById("statsText");
+        const remainingText = document.getElementById("remainingText");
+        const progressFill = document.getElementById("progressFill");
+        const markAllBtn = document.getElementById("markAllBtn");
+        const resetBtn = document.getElementById("resetBtn");
+        const themeToggleBtn = document.getElementById("themeToggle");
+
+        let state = loadState();
+
+        function makeItem(title, index) {
+            const li = document.createElement("li");
+            li.className = "item";
+            li.setAttribute("role", "button");
+            li.setAttribute("tabindex", "0");
+            li.dataset.index = index;
+
+            li.innerHTML = `
+                <div class="check" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="title"></div>
+                <div class="linkBtns"></div>
+                <div class="hint">click</div>
+            `;
+
+            li.querySelector(".title").textContent = title;
+
+            const btnsContainer = li.querySelector(".linkBtns");
+            const links = lectureLinks[index] || [];
+            links.forEach((link) => {
+                const a = document.createElement("a");
+                a.className = "linkBtn";
+                if (links.length > 1) {
+                    a.classList.add("half");
+                }
+                a.href = link.url;
+                a.target = "_blank";
+                a.rel = "noopener noreferrer";
+                a.textContent = link.name;
+                a.title = link.name + " — فتح التفريغ";
+                a.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                });
+                btnsContainer.appendChild(a);
             });
-            btnsContainer.appendChild(a);
-        });
 
-        li.addEventListener("click", (e) => {
-            if (e.target.closest(".linkBtn")) return;
-            toggle(index);
-        });
-        li.addEventListener("keydown", (e) => {
-            if (e.key === "Enter" || e.key === " ") {
-                if (document.activeElement && document.activeElement.closest(".linkBtn")) return;
-                e.preventDefault();
+            li.addEventListener("click", (e) => {
+                if (e.target.closest(".linkBtn")) return;
                 toggle(index);
-            }
+            });
+            li.addEventListener("keydown", (e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                    if (document.activeElement && document.activeElement.closest(".linkBtn")) return;
+                    e.preventDefault();
+                    toggle(index);
+                }
+            });
+
+            return li;
+        }
+
+        function render() {
+            listEl.innerHTML = "";
+            lectures.forEach((t, i) => {
+                const item = makeItem(t, i);
+                if (state[i]) item.classList.add("checked");
+                listEl.appendChild(item);
+            });
+            updateProgress();
+        }
+
+        function toggle(index) {
+            state[index] = !state[index];
+            saveState(state);
+            const item = listEl.querySelector(`.item[data-index="${index}"]`);
+            if (item) item.classList.toggle("checked", state[index]);
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const done = state.filter(Boolean).length;
+            const percent = Math.round((done / TOTAL) * 100);
+            statsText.textContent = `${percent}% — ${done}/${TOTAL}`;
+            remainingText.textContent = `Remaining: ${TOTAL - done}`;
+            progressFill.style.width = `${percent}%`;
+        }
+
+        markAllBtn.addEventListener("click", () => {
+            state = new Array(TOTAL).fill(true);
+            saveState(state);
+            render();
         });
 
-        return li;
-    }
+        resetBtn.addEventListener("click", showConfirmModal);
 
-    function render() {
-        listEl.innerHTML = "";
-        lectures.forEach((t, i) => {
-            const item = makeItem(t, i);
-            if (state[i]) item.classList.add("checked");
-            listEl.appendChild(item);
-        });
-        updateProgress();
-    }
+        themeToggleBtn.addEventListener("click", toggleTheme);
+        applyTheme(loadTheme());
 
-    function toggle(index) {
-        state[index] = !state[index];
-        saveState(state);
-        const item = listEl.querySelector(`.item[data-index="${index}"]`);
-        if (item) item.classList.toggle("checked", state[index]);
-        updateProgress();
-    }
-
-    function updateProgress() {
-        const done = state.filter(Boolean).length;
-        const percent = Math.round((done / TOTAL) * 100);
-        statsText.textContent = `${percent}% — ${done}/${TOTAL}`;
-        remainingText.textContent = `Remaining: ${TOTAL - done}`;
-        progressFill.style.width = `${percent}%`;
-    }
-
-    markAllBtn.addEventListener("click", () => {
-        state = new Array(TOTAL).fill(true);
-        saveState(state);
         render();
-    });
-
-    // 🗑️ زر Reset يظهر نافذة تأكيد
-    resetBtn.addEventListener("click", showConfirmModal);
-
-    themeToggleBtn.addEventListener("click", toggleTheme);
-    applyTheme(loadTheme());
-
-    render();
-</script>
+    </script>
 </body>
-    </html>
+</html>
