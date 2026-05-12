@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Internal Checklist</title>
     <style>
-        /* ========== متغيرات الوضع الداكن (الافتراضي) ========== */
         :root,
         [data-theme="dark"] {
             --bg: #0b1220;
@@ -43,13 +42,10 @@
             --checkedCheckBorder: rgba(34, 197, 94, .65);
             --toggleBg: rgba(255, 255, 255, .06);
             --toggleBorder: rgba(255, 255, 255, .12);
-
-            /* 🆕 ألوان البسملة والتذييل للوضع الليلي */
             --basmala-color: #ffffff;
             --footer-color: #ffffff;
         }
 
-        /* ========== متغيرات الوضع النهاري ========== */
         [data-theme="light"] {
             --bg: #f1f5f9;
             --card: #ffffff;
@@ -62,7 +58,7 @@
             --shadow: 0 10px 30px rgba(0, 0, 0, .08);
             --bgGradient: radial-gradient(1000px 600px at 20% 10%, #e0e7ff 0%, var(--bg) 55%) fixed;
             --headerBorder: rgba(0, 0, 0, .06);
-            --headerBg: linear-gradient(180deg, rgba(37, 99, 235, .08), rgba(255, 255, 255, .0));
+            --headerBg: rgba(255, 255, 255, 0.85);
             --mainBg: rgba(255, 255, 255, .75);
             --mainBorder: rgba(0, 0, 0, .06);
             --itemBg: rgba(0, 0, 0, .02);
@@ -85,9 +81,7 @@
             --checkedCheckBorder: rgba(22, 163, 74, .50);
             --toggleBg: rgba(0, 0, 0, .05);
             --toggleBorder: rgba(0, 0, 0, .10);
-
-            /* ألوان البسملة والتذييل للوضع النهاري */
-            --basmala-color: #166534; /* أخضر غامق */
+            --basmala-color: #166534;
             --footer-color: #000000;
         }
 
@@ -101,7 +95,6 @@
             color: var(--text);
         }
 
-        /* ========== 🆕 البسملة ========== */
         .basmala {
             text-align: center;
             font-size: 2.4rem;
@@ -111,12 +104,10 @@
             padding: 24px 16px 8px;
             margin: 0;
             letter-spacing: 1px;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            background: transparent;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
             transition: color 0.3s ease;
         }
 
-        /* ========== 🆕 التذييل ========== */
         .footer {
             text-align: center;
             font-size: 1.1rem;
@@ -124,7 +115,6 @@
             color: var(--footer-color);
             padding: 24px 16px 40px;
             margin-top: 12px;
-            background: transparent;
             transition: color 0.3s ease;
         }
 
@@ -134,16 +124,36 @@
             padding: 0 16px 10px;
         }
 
+        /* ── شريط التثبيت (sticky header) ── */
+        .stickyBar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg);
+            padding: 8px 16px 0;
+            margin: 0 -16px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            background: rgba(11, 18, 32, 0.82);
+            border-bottom: 1px solid var(--headerBorder);
+            transition: background 0.3s ease;
+        }
+        [data-theme="light"] .stickyBar {
+            background: rgba(241, 245, 249, 0.88);
+        }
+
+        .stickyBarInner {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
         header {
             background: var(--headerBg);
             border: 1px solid var(--headerBorder);
             box-shadow: var(--shadow);
             border-radius: var(--radius);
             padding: 18px 18px 16px;
-            position: sticky;
-            top: 12px;
-            backdrop-filter: blur(10px);
-            z-index: 10;
         }
 
         .headerTop {
@@ -390,6 +400,64 @@
             transform: scale(1);
         }
 
+        /* ── حوار التأكيد (modal) ── */
+        .modalOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+        .modalOverlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modalBox {
+            background: var(--card);
+            border: 1px solid var(--headerBorder);
+            border-radius: var(--radius);
+            padding: 28px 24px 20px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        .modalBox p {
+            margin: 0 0 20px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.5;
+        }
+        .modalBtns {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .modalBtns button {
+            min-width: 80px;
+        }
+        .confirmYes {
+            border-color: rgba(255, 77, 77, .45);
+            background: rgba(255, 77, 77, .15);
+            color: #ff6b6b;
+        }
+        .confirmYes:hover {
+            background: rgba(255, 77, 77, .25);
+            border-color: rgba(255, 77, 77, .6);
+        }
+        .confirmNo {
+            border-color: var(--btnBorder);
+            background: var(--btnBg);
+            color: var(--text);
+        }
+
         @media (max-width: 600px) {
             .basmala {
                 font-size: 1.8rem;
@@ -428,6 +496,9 @@
                 height: 36px;
                 font-size: 18px;
             }
+            .stickyBar {
+                padding: 6px 12px 0;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -435,7 +506,8 @@
             .item,
             .check svg,
             .linkBtn,
-            .themeToggle {
+            .themeToggle,
+            .modalOverlay {
                 transition: none;
             }
         }
@@ -443,52 +515,66 @@
 </head>
 
 <body>
-    <!-- 🆕 البسملة في أول الصفحة -->
     <div class="basmala">بسم الله الرحمن الرحيم</div>
 
-    <div class="wrap">
-        <header>
-            <div class="headerTop">
-                <h1>📚 Internal Checklist</h1>
-                <button
-                class="themeToggle"
-                id="themeToggle"
-                title="تبديل الوضع النهاري / الداكن"
-                aria-label="Toggle dark/light mode"
-                >
-                ☀️
-            </button>
-        </div>
-        <p class="sub">
-            اضغط على اسم المحاضرة للتعليم عليها (تتحول للأخضر مع خط). التقدم محفوظ تلقائيًا على نفس الجهاز.
-        </p>
-        <p class="subNote">
-            🔗 بجانب كل محاضرة يوجد زر عليه اسم الدكتور، عند ضغطك عليه سينقلك للتفريغ على قناة الفريق الأكاديمي.
-        </p>
+    <!-- 🆕 شريط مثبت يلتف حول الهيدر كاملاً -->
+    <div class="stickyBar">
+        <div class="stickyBarInner">
+            <header>
+                <div class="headerTop">
+                    <h1>📚 Internal Checklist</h1>
+                    <button
+                    class="themeToggle"
+                    id="themeToggle"
+                    title="تبديل الوضع النهاري / الداكن"
+                    aria-label="Toggle dark/light mode"
+                    >
+                    ☀️
+                </button>
+            </div>
+            <p class="sub">
+                اضغط على اسم المحاضرة للتعليم عليها (تتحول للأخضر مع خط). التقدم محفوظ تلقائيًا على نفس الجهاز.
+            </p>
+            <p class="subNote">
+                🔗 بجانب كل محاضرة يوجد زر عليه اسم الدكتور، عند ضغطك عليه سينقلك للتفريغ على قناة الفريق الأكاديمي.
+            </p>
 
-        <div class="progressRow">
-            <div class="stats" id="statsText">0% — 0/52</div>
-            <div class="stats" id="remainingText">Remaining: 52</div>
-        </div>
+            <div class="progressRow">
+                <div class="stats" id="statsText">0% — 0/52</div>
+                <div class="stats" id="remainingText">Remaining: 52</div>
+            </div>
 
-        <div class="bar" aria-label="Progress bar">
-            <div class="fill" id="progressFill"></div>
-        </div>
+            <div class="bar" aria-label="Progress bar">
+                <div class="fill" id="progressFill"></div>
+            </div>
 
-        <div class="controls">
-            <button id="markAllBtn" title="Mark all as done">Mark all ✅</button>
-            <button id="unmarkAllBtn" title="Unmark all">Unmark all ↩️</button>
-            <button class="dangerBtn" id="resetBtn" title="Clear saved progress">Reset (clear saved) 🧹</button>
-        </div>
-    </header>
+            <div class="controls">
+                <button id="markAllBtn" title="Mark all as done">Mark all ✅</button>
+                <!-- 🗑️ زر Unmark all محذوف -->
+                <button class="dangerBtn" id="resetBtn" title="Clear saved progress">Reset (clear saved) 🧹</button>
+            </div>
+        </header>
+    </div>
+</div>
 
+<div class="wrap">
     <main>
         <ul class="list" id="lectureList" aria-label="Lecture checklist"></ul>
     </main>
 </div>
 
-<!-- 🆕 التذييل الثابت -->
 <div class="footer">نتمنى لكم كل التوفيق - الفريق الأكاديمي</div>
+
+<!-- 🆕 نافذة تأكيد الحذف -->
+<div class="modalOverlay" id="confirmModal">
+    <div class="modalBox">
+        <p>⚠️ هل أنت متأكد من حذف كل التقدم؟<br>لا يمكن التراجع عن هذا الإجراء.</p>
+        <div class="modalBtns">
+            <button class="confirmYes" id="confirmYesBtn">نعم، احذف</button>
+            <button class="confirmNo" id="confirmNoBtn">إلغاء</button>
+        </div>
+    </div>
+</div>
 
 <script>
     // ========= Lecture Data =========
@@ -615,7 +701,6 @@
     ];
 
     const TOTAL = lectures.length;
-
     const STORAGE_KEY = "internalChecklist_v1";
     const THEME_KEY = "internalChecklist_theme";
 
@@ -656,12 +741,35 @@
         applyTheme(next);
     }
 
+    // ── نافذة التأكيد ──
+    const confirmModal = document.getElementById("confirmModal");
+    const confirmYesBtn = document.getElementById("confirmYesBtn");
+    const confirmNoBtn = document.getElementById("confirmNoBtn");
+
+    function showConfirmModal() {
+        confirmModal.classList.add("active");
+    }
+    function hideConfirmModal() {
+        confirmModal.classList.remove("active");
+    }
+
+    confirmYesBtn.addEventListener("click", () => {
+        localStorage.removeItem(STORAGE_KEY);
+        state = new Array(TOTAL).fill(false);
+        render();
+        hideConfirmModal();
+    });
+    confirmNoBtn.addEventListener("click", hideConfirmModal);
+    confirmModal.addEventListener("click", (e) => {
+        if (e.target === confirmModal) hideConfirmModal();
+    });
+
+    // ── UI ──
     const listEl = document.getElementById("lectureList");
     const statsText = document.getElementById("statsText");
     const remainingText = document.getElementById("remainingText");
     const progressFill = document.getElementById("progressFill");
     const markAllBtn = document.getElementById("markAllBtn");
-    const unmarkAllBtn = document.getElementById("unmarkAllBtn");
     const resetBtn = document.getElementById("resetBtn");
     const themeToggleBtn = document.getElementById("themeToggle");
 
@@ -752,16 +860,9 @@
         saveState(state);
         render();
     });
-    unmarkAllBtn.addEventListener("click", () => {
-        state = new Array(TOTAL).fill(false);
-        saveState(state);
-        render();
-    });
-    resetBtn.addEventListener("click", () => {
-        localStorage.removeItem(STORAGE_KEY);
-        state = new Array(TOTAL).fill(false);
-        render();
-    });
+
+    // 🗑️ زر Reset يظهر نافذة تأكيد
+    resetBtn.addEventListener("click", showConfirmModal);
 
     themeToggleBtn.addEventListener("click", toggleTheme);
     applyTheme(loadTheme());
@@ -769,4 +870,4 @@
     render();
 </script>
 </body>
-</html>
+    </html>
